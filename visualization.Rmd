@@ -1,0 +1,72 @@
+---
+title: "Reaction time experiment"
+author: "Daniel Lundgaard"
+date: "15-09-2022"
+output: 
+  html_document:
+    toc: true
+editor_options: 
+  markdown: 
+    wrap: 80
+  chunk_output_type: inline
+---
+
+```{r include=FALSE}
+knitr::opts_knit$set(root.dir = file.path(getwd()), warning = FALSE) # Setting `knitr` options 
+```
+
+## Loading dependencies
+
+```{r message=FALSE}
+library(tidyverse)
+```
+
+## Reading in data source
+
+```{r message=FALSE}
+data <- read_csv("results.csv")
+```
+
+## First look
+
+```{r}
+head(data)
+```
+```{r}
+summary <- 
+  data %>%
+  group_by(type) %>%
+  summarise(samples = n(), mean=round(mean(score), digits=2), median=round(median(score), digits=2), sd=round(sd(score), 2))
+summary
+```
+
+
+## Data visualization
+
+```{r message=FALSE}
+labels <-  c("Reaction only", "React and decide")
+
+data %>%
+  ggplot(aes(x=score, fill=type)) +
+  geom_density(alpha=0.8, outline.type = "lower") +
+  geom_vline(data=summary, aes(xintercept=median, color=type), size=1) +
+  scale_fill_discrete(labels=labels) +
+  scale_colour_discrete(labels=labels) +
+  labs(title="Distribution of response times", x="Time to respond (s)") +
+  xlim(0.05, 2 / 3) +
+  theme_minimal()
+```
+
+>For the simple **reaction only**-condition, we see a hight degree of *positive kurtosis*, while for the **react and decide**-condition we see a great amount of *negative kurtosis* as well as a tiny bit of *positive skewness*.
+
+
+```{r message=FALSE}
+data %>%
+  ggplot(aes(x=date, y=score, color=type)) +
+  geom_point() +
+  geom_smooth(method="lm") +
+  scale_colour_discrete(labels=labels) +
+  labs(title="Development of results across time", y="Time to respond (s)") +
+  theme_minimal()
+```
+
