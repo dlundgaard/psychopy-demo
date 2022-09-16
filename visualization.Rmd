@@ -19,6 +19,7 @@ knitr::opts_knit$set(root.dir = file.path(getwd()), warning = FALSE) # Setting `
 
 ```{r message=FALSE}
 library(tidyverse)
+library(magrittr)
 ```
 
 ## Reading in data source
@@ -40,32 +41,55 @@ summary <-
 summary
 ```
 
+## Applying readable label names for the test conditions
+
+```{r message=FALSE}
+type_id <- new.env()
+type_id[["reaction_visual"]] <- "Visual reaction"
+type_id[["reaction_auditory"]] <- "Auditory reaction"
+type_id[["reaction_and_decision"]] <- "Visual reaction and decision"
+
+data %<>% 
+  mutate(label = sapply(type, function(t) type_id[[t]])
+```
+
 
 ## Data visualization
 
 ```{r message=FALSE}
-labels <-  c("Reaction only", "React and decide")
-
 data %>%
+  filter(type %in% c("reaction_visual", "reaction_and_decision")) %>%
   ggplot(aes(x=score, fill=type)) +
-  geom_density(alpha=0.8, outline.type = "lower") +
-  geom_vline(data=summary, aes(xintercept=median, color=type), size=1) +
-  scale_fill_discrete(labels=labels) +
-  scale_colour_discrete(labels=labels) +
-  labs(title="Distribution of response times", x="Time to respond (s)") +
+  geom_density(alpha=0.6, outline.type = "lower") +
+  scale_fill_discrete(labels=data$label) +
+  labs(title="Distribution of response times for simple visual reaction vs. deciding based on colour", x="Time to respond (s)") +
   xlim(0.05, 2 / 3) +
   theme_minimal()
 ```
 
 >For the simple **reaction only**-condition, we see a hight degree of *positive kurtosis*, while for the **react and decide**-condition we see a great amount of *negative kurtosis* as well as a tiny bit of *positive skewness*.
 
+## Reaction time for visual- vs auditory stimuli
+
+```{r}
+data %>%
+  filter(type %in% c("reaction_visual", "reaction_auditory")) %>%
+  ggplot(aes(x=score, fill=type)) +
+  geom_density(alpha=0.6, outline.type = "lower") +
+  scale_fill_discrete(labels=data$label) +
+  labs(title="Distribution of response times for visual- and auditory stimuli", x="Time to respond (s)") +
+  xlim(0.05, 2 / 3) +
+  theme_minimal()
+```
+
+## Over time
 
 ```{r message=FALSE}
 data %>%
   ggplot(aes(x=date, y=score, color=type)) +
   geom_point() +
   geom_smooth(method="lm") +
-  scale_colour_discrete(labels=labels) +
+  scale_colour_discrete(labels=data$label) +
   labs(title="Development of results across time", y="Time to respond (s)") +
   theme_minimal()
 ```
