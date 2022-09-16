@@ -25,14 +25,13 @@ class Experiment:
         self.set_background_color("#050505")
 
         self.instructions = visual.TextStim(self.window, "")
-        self.instructions.draw()
 
         self.window.flip()
 
     def menu_page(self):
         self.set_background_color("purple")
-        self.instructions.text = "Press the SPACE-key to continue or the Q-key to exit."
-        self.instructions.draw()
+        self.set_instruction_text("Press the SPACE-key to continue or the Q-key to exit.")
+        
         self.window.flip()
 
         pressed_key = event.waitKeys(keyList = ["space", "q"])[0]
@@ -42,14 +41,13 @@ class Experiment:
             self.window.close()
 
     def get_ready(self):
-        self.instructions.text = "Get ready"
-        self.instructions.draw()
+        self.set_instruction_text("Get ready")
+        
         self.window.flip()
 
         core.wait(0.5)
 
-        self.instructions.text = ""
-        self.instructions.draw()
+        self.set_instruction_text("")
         self.window.flip()
 
         self.experiment_function()
@@ -57,6 +55,10 @@ class Experiment:
     def set_background_color(self, color):
         self.background.color = color
         self.background.draw()
+
+    def set_instruction_text(self, text):
+        self.instructions.text = text
+        self.instructions.draw()
 
     def reaction_time_visual(self):
         core.wait(1 + self.rand.random() * 2) # wait for between 1 and 3 seconds
@@ -68,8 +70,7 @@ class Experiment:
         key = event.waitKeys(keyList = ["space"])[0] # wait for user pressing SPACE
         time_to_respond = self.stopwatch.getTime()
 
-        self.instructions.text = f"Successful in {round(time_to_respond * 1000)} ms"
-        self.instructions.draw()
+        self.set_instruction_text(f"Successful in {round(time_to_respond * 1000)} ms")
         self.log_result("reaction_visual", time_to_respond)
         self.window.flip()
 
@@ -86,8 +87,7 @@ class Experiment:
         key = event.waitKeys(keyList = ["space"])[0] # wait for user pressing SPACE
         time_to_respond = self.stopwatch.getTime()
 
-        self.instructions.text = f"Successful in {round(time_to_respond * 1000)} ms"
-        self.instructions.draw()
+        self.set_instruction_text(f"Successful in {round(time_to_respond * 1000)} ms")
         self.log_result("reaction_auditory", time_to_respond)
         self.window.flip()
 
@@ -97,7 +97,6 @@ class Experiment:
     def color_motor_processing(self):
         target_response = self.rand.choice(["left", "right"]) # randomly select which key will be the target key
 
-        self.instructions.text = ""
         core.wait(1 + self.rand.random() * 2) # wait for between 1 and 3 seconds
 
         self.set_background_color("blue" if target_response == "left" else "red")
@@ -116,8 +115,8 @@ class Experiment:
             feedback_color = "grey"
 
         self.set_background_color(feedback_color)
-        self.instructions.text = f"{feedback_text} in {round(time_to_respond * 1000)} ms"
-        self.instructions.draw()
+        self.set_instruction_text(f"{feedback_text} in {round(time_to_respond * 1000)} ms")
+        
         self.window.flip()
 
         core.wait(2)
