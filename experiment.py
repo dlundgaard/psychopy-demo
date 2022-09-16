@@ -30,7 +30,7 @@ class Experiment:
 
     def menu_page(self):
         self.set_background_color("purple")
-        self.set_instruction_text("Press the SPACE-key to continue or the Q-key to exit.")
+        self.set_instruction_text("Press the SPACE-key to proceed or the Q-key to exit.")
         
         self.window.flip()
 
