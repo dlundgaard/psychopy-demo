@@ -41,7 +41,7 @@ summary <-
 summary
 ```
 
-## Applying readable label names for the test conditions
+## Applying readable label names for test conditions and setting order
 
 ```{r message=FALSE}
 type_id <- new.env()
@@ -50,7 +50,8 @@ type_id[["reaction_auditory"]] <- "Auditory reaction"
 type_id[["reaction_and_decision"]] <- "Visual reaction and decision"
 
 data %<>% 
-  mutate(label = sapply(type, function(t) type_id[[t]])
+  mutate(label = sapply(type, function(t) type_id[[t]])) %>% 
+  mutate(type = factor(type, levels = c("reaction_visual", "reaction_auditory", "reaction_and_decision")))
 ```
 
 
@@ -67,7 +68,7 @@ data %>%
   theme_minimal()
 ```
 
->For the simple **reaction only**-condition, we see a hight degree of *positive kurtosis*, while for the **react and decide**-condition we see a great amount of *negative kurtosis* as well as a tiny bit of *positive skewness*.
+>For the simple **reaction only**-condition, we see a lot of *positive kurtosis*, while for the **react and decide**-condition we see a great amount of *negative kurtosis* as well as a tiny bit of *positive skewness*.
 
 ## Reaction time for visual- vs auditory stimuli
 
