@@ -91,7 +91,7 @@ data %>%
   geom_point() +
   geom_smooth(method="lm") +
   scale_colour_discrete(labels=data$label) +
-  labs(title="Development of results across time", y="Time to respond (s)") +
+  labs(title="Development of results across time", x = "Time", y="Time to respond (s)") +
   theme_minimal()
 ```
 
