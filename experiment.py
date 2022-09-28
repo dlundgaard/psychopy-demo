@@ -1,6 +1,6 @@
 from psychopy import core, event, visual, sound
-import random, datetime, csv
 import psychtoolbox as ptb
+import os, random, datetime, csv, pathlib
 
 class Experiment:
     def __init__(self):
@@ -123,7 +123,7 @@ class Experiment:
         self.menu_page()
 
     def log_result(self, test_name, score):
-        with open("results.csv", "a") as file:
+        with open(os.path.join(pathlib.Path(__file__).parent.absolute(), "results.csv"), "a") as file:
             file.write(f"\n{datetime.datetime.now()},{test_name},{score}")
 
 Experiment()
