@@ -1,4 +1,4 @@
-from psychopy import core, event, visual, sound, prefs, monitors
+from psychopy import core, event, visual, sound, prefs, monitors, prefs
 import psychtoolbox
 import os, random, datetime, csv, pathlib
 
