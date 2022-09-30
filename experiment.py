@@ -1,5 +1,5 @@
-from psychopy import core, event, visual, sound
-import psychtoolbox as ptb
+from psychopy import core, event, visual, sound, prefs
+import psychtoolbox
 import os, random, datetime, csv, pathlib
 
 class Experiment:
@@ -9,7 +9,7 @@ class Experiment:
             self.reaction_time_auditory,
             self.color_motor_processing,
         ]
-        self.experiment_function = modes[0]
+        self.experiment_function = modes[1]
 
         self.rand = random.Random()
         self.stopwatch = core.Clock()
@@ -78,8 +78,9 @@ class Experiment:
         self.menu_page()
 
     def reaction_time_auditory(self):
-        beep = sound.Sound("A")
-        beep.play(when = ptb.GetSecs() + (1 + self.rand.random() * 2)) # wait for between 1 and 3 seconds
+        core.wait(1 + self.rand.random() * 2) # wait for between 1 and 3 seconds
+
+        sound.Sound("A").play()
 
         self.stopwatch.reset()
         key = event.waitKeys(keyList = ["space"])[0] # wait for user pressing SPACE
