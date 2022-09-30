@@ -78,10 +78,8 @@ class Experiment:
         self.menu_page()
 
     def reaction_time_auditory(self):
-        core.wait(1 + self.rand.random() * 2) # wait for between 1 and 3 seconds
-
         beep = sound.Sound("A")
-        beep.play()
+        beep.play(when = ptb.GetSecs() + (1 + self.rand.random() * 2)) # wait for between 1 and 3 seconds
 
         self.stopwatch.reset()
         key = event.waitKeys(keyList = ["space"])[0] # wait for user pressing SPACE
