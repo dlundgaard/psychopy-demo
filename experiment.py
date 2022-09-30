@@ -1,4 +1,4 @@
-from psychopy import core, event, visual, sound, prefs
+from psychopy import core, event, visual, sound, prefs, monitors
 import psychtoolbox
 import os, random, datetime, csv, pathlib
 
@@ -17,7 +17,7 @@ class Experiment:
         self.menu_page()
 
     def setup_window(self):
-        self.window = visual.Window(color = "grey", fullscr=False) 
+        self.window = visual.Window(color = "grey", fullscr = False, monitor = "MainMonitor") 
         self.window.flip()
 
         self.background = visual.rect.Rect(self.window, size=2)
@@ -27,6 +27,9 @@ class Experiment:
         self.instructions = visual.TextStim(self.window, "")
 
         self.window.flip()
+
+    def setup_monitor(self):
+        monitors.Monitor("MainMonitor").save()
 
     def menu_page(self):
         self.set_background_color("purple")
