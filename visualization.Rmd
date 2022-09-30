@@ -20,6 +20,7 @@ knitr::opts_knit$set(root.dir = file.path(getwd()), warning = FALSE) # Setting `
 ```{r message=FALSE}
 library(tidyverse)
 library(magrittr)
+library(lubridate)
 ```
 
 ## Reading in data source
@@ -87,10 +88,8 @@ data %>%
 
 ```{r message=FALSE}
 data %>%
-  ggplot(aes(x=date, y=score, color=type)) +
-  geom_point() +
-  geom_smooth(method="lm") +
-  scale_colour_discrete(labels=data$label) +
+  ggplot(aes(x=hour(date), y=log10(score), color=type)) +
+  geom_boxplot() +
   labs(title="Development of results across time", x = "Time", y="Time to respond (s)") +
   theme_minimal()
 ```
