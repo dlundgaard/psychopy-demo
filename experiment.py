@@ -9,7 +9,7 @@ class Experiment:
             self.reaction_time_auditory,
             self.color_motor_processing,
         ]
-        self.experiment_function = modes[1]
+        self.experiment_function = modes[0]
 
         self.rand = random.Random()
         self.stopwatch = core.Clock()
@@ -125,5 +125,3 @@ class Experiment:
     def log_result(self, test_name, score):
         with open(os.path.join(pathlib.Path(__file__).parent.absolute(), "results.csv"), "a") as file:
             file.write(f"\n{datetime.datetime.now()},{test_name},{score}")
-
-Experiment()
